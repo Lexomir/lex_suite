@@ -1,0 +1,27 @@
++ApiHeader
+-blender
+import bpy
+import math
+-unity
+using mathf
+using UnityEngine;
+using UnityEditor;
+~
+
+AddVector
+input Vector3 vec
+input Vector3 other
+output Vector3 result
+
+-unity
+--invoke
+$(result) = $(vec) + $(other)
+
+-blender
+--declare
+def AddVector(vec, other):
+	return (vec.x + other.x, vec.y + other.y, vec.z + other.z)
+	
+--invoke
+$(result) = $(AddVector)($(vec), $(other))
+~

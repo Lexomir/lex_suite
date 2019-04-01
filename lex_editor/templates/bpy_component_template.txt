@@ -1,0 +1,40 @@
+def inputs(self):
+    pass
+    
+def input_changed(self):
+    self.process()
+
+def frame_changed(self):
+    self.process()
+
+def object_transitioning(self, target_state):
+    pass
+
+def start(self):
+    pass
+
+def process(self):
+    pass
+
+def stop(self):
+    pass
+
+
+            
+# real stuff
+
+# def on_start(self):
+#     self.intense_map = map()
+
+# def on_input_change(self):
+#     self.input_dependent_map = some_map($i(0,2))
+
+# def on_process(self):
+#     supple = $i(0,100)
+#     p_types = $e("sup", "um", "iDontThinkSo")
+#     name = $s("sup")
+#     obj = $o("daddy")
+    
+#     pumps = dup(scene.objects['Pumper'], 2000)
+#     for pump in pumps:
+#         pump.location = ($i(0,10) * rand(), supple * rand(), rand())
