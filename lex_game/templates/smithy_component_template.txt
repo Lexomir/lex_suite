@@ -4,7 +4,7 @@ function ${COMPONENT_NAME}:start(args)
     --
 end
 
-function ${COMPONENT_NAME}:update()
+function ${COMPONENT_NAME}:update(dt)
     --
 end
 

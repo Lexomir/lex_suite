@@ -1,4 +1,5 @@
 import bpy
+from .nodes.base import LexSM_BaseNodeTree
 from .. import uibase
 from ..utils import *
 
@@ -82,4 +83,26 @@ class LexSM_SceneStatePanel(bpy.types.Panel):
                 for state in output_states:
                     # layout.operator("switch_to_object_state")
                     pass
+
+
+class NODE_PT_SceneStateNodePanel(bpy.types.Panel):
+    bl_space_type = 'NODE_EDITOR'
+    bl_region_type = 'UI'
+    bl_category = "Node"
+    bl_options = {'DEFAULT_CLOSED'}
+    bl_label = "Smithy"
+    
+    @classmethod
+    def poll(cls, context):
+        node_group = context.space_data.node_tree
+        return node_group and isinstance(node_group, LexSM_BaseNodeTree) and node_group.nodes.active
+        
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+
+        node_group = context.space_data.node_tree
+        node = node_group.nodes.active
+        layout.prop(node, "lex_name", text="Name")
+        layout.operator('lexgame.edit_selected_smithy_state_script', text="Edit Script")
 

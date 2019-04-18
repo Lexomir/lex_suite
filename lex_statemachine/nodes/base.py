@@ -37,14 +37,18 @@ class LexSM_StateSocket(bpy.types.NodeSocket):
 
 
 class LexSM_BaseStateNode:
-    def init(self, context):
+    def init(self, context):        
         applied_state = self.get_nodegroup().find_applied_state_node()
         if not applied_state:
             # this node will adopt the object's current state
             self.get_nodegroup().set_node_as_applied(self)
+        else:
+            self.get_nodegroup().apply_state(self)
 
         self.inputs.new('LexSM_StateSocket', "Previous")
         self.outputs.new('LexSM_StateSocket', "Next")
+ 
+        self._call_state_created_callbacks()
 
     def update(self):
         for i in self.inputs:
@@ -83,6 +87,8 @@ class LexSM_BaseStateNode:
     # Copy function to initialize a copied node from an existing one.
     def copy(self, node):
         self.color = self.true_color
+        self.get_nodegroup().apply_state(self)
+        self._call_state_created_callbacks()
 
     # Free function to clean up on removal.
     def free(self):
@@ -90,12 +96,18 @@ class LexSM_BaseStateNode:
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
-        pass
+        layout.operator("lexsm.apply_state_node_under_cursor", text="Apply")
 
     # Detail buttons in the sidebar.
     # If this function is not defined, the draw_buttons function is used instead
     def draw_buttons_ext(self, context, layout):
-        layout.prop(self, "true_color")
+        layout.prop(self, "lex_name", text="Name")
+        layout.prop(self, "true_color", text="Color")
+
+    def _call_state_created_callbacks(self):
+        from .. import _scene_state_created_callbacks
+        for cb in _scene_state_created_callbacks:
+            cb(self.get_nodegroup(), self)
 
     true_color : bpy.props.FloatVectorProperty(subtype='COLOR', default=(0.4, 0.4, 0.4))
     is_applied : bpy.props.BoolProperty(default=False)
@@ -126,6 +138,4 @@ class LexSM_BaseNodeTree:
             if n.is_applied:
                 return n
         return None
-
-
 

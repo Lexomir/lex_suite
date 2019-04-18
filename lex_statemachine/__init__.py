@@ -22,3 +22,12 @@ def add_scene_save_callback(func):
     
 def add_scene_load_callback(func):
     _scene_load_callbacks.append(func)
+
+
+_scene_state_created_callbacks = []
+def add_scene_state_created_callback(cb):
+    _scene_state_created_callbacks.append(cb)
+
+_scene_state_namechange_callbacks = []
+def add_scene_state_namechange_callback(cb):
+    _scene_state_namechange_callbacks.append(cb)

@@ -1,6 +1,8 @@
 import bpy
 from .base import LexSM_BaseNodeTree
 
+from ..utils import refresh_screen_area
+
 import nodeitems_utils
 from nodeitems_utils import NodeCategory, NodeItem
 
@@ -109,6 +111,7 @@ class LexSM_ObjectNodeTree(bpy.types.NodeTree, LexSM_BaseNodeTree):
         for o in objs:
             node.object_state.load(o)
 
+        refresh_screen_area("PROPERTIES")
 
 
 class LexSM_ObjectNodeCategory(NodeCategory):

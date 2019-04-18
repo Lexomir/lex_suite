@@ -51,8 +51,9 @@ class LexSM_ObjectState(bpy.types.PropertyGroup):
 
         self.smithy_components_serialized.clear()
         for c in obj.lexgame.smithy.script_components:
-            sc = self.smithy_components_serialized.add()
-            sc.serialize(c)
+            if c.filepath:
+                sc = self.smithy_components_serialized.add()
+                sc.serialize(c)
 
         self.location = obj.location
         self.rotation_quaternion = obj.rotation_quaternion

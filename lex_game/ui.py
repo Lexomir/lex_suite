@@ -48,6 +48,29 @@ class ComponentUIList(bpy.types.UIList):
         i = "sup"
 
 
+class LexGameScenePanel(bpy.types.Panel):
+    bl_idname = "SCENE_PT_lex_game_scene_panel"
+    bl_label = "Smithy"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "scene"
+
+    @classmethod
+    def poll(cls, context):
+        return context.scene
+
+    def draw(self, context):
+        layout = self.layout
+        state_nodegroup = context.scene.lexsm.get_nodegroup()
+        state = state_nodegroup.find_applied_state_node() if state_nodegroup else None
+        if state:
+            layout.label(text="State: " + state.lex_name)
+            layout.operator('lexgame.edit_applied_smithy_state_script', text="Edit Script")
+        else:
+            layout.label(text="State: [None]")
+
+
+
 class LexGameObjectPanel(bpy.types.Panel):
     bl_idname = "OBJECT_PT_lex_game_obj_panel"
     bl_label = "Smithy Components"
@@ -128,6 +151,7 @@ class OpenSmithyComponentScriptExternal(bpy.types.Operator):
     @classmethod
     def poll(self, context):
         c_index = context.object.lexgame.smithy.active_script_component_index
+        c = None
         if 0 <= c_index < len(context.object.lexgame.smithy.script_components):
             c = context.object.lexgame.smithy.script_components[c_index]
         return context.object and c and c.filepath != ""

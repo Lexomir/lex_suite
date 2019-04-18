@@ -17,4 +17,7 @@ def fetch_component_definition(component_type):
 
 
 def abs_component_scriptpath(local_path):
-    return bpy.path.abspath("//") + "gamedata/scripts/components/" + local_path + ".lua"
+    return bpy.path.abspath("//") + "gamedata/assets/scripts/components/" + local_path + ".lua"
+
+def abs_state_scriptpath(state_name):
+    return bpy.path.abspath("//") + "gamedata/assets/scripts/states/" + state_name + ".lua"

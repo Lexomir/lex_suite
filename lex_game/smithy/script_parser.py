@@ -16,7 +16,7 @@ def parse_input(input_str):
         kwargs.setdefault("max", inf)
         return (name, 'int', kwargs['default'], [kwargs['min'], kwargs['max']]), None
     # expect format:  --$my_name(float, min, max, default)
-    def parse_float(name, *args, **kwargs):
+    def parse_scalar(name, *args, **kwargs):
         if len(args) > 0: kwargs['min'] = args[0]
         if len(args) > 1: kwargs['max'] = args[1]
         if len(args) > 2: kwargs['default'] = args[2]
@@ -97,7 +97,7 @@ def parse_script_inputs(abs_filepath):
     return inputs, "\n".join(errors)
 
 
-
+# set the inputs in the ui
 def set_bpy_inputs(bpy_component, inputs):
     num_inputs = len(inputs)
     while len(bpy_component.inputs) < num_inputs:

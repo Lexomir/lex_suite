@@ -1,6 +1,6 @@
 import bpy
 from .. import handlers
-from .smithy.properties import LexSmithyObject
+from .smithy.properties import LexSmithyObject, LexSmithyScene
 from .smithy import engine_components
 
 class LexGameBase:
@@ -13,6 +13,9 @@ class LexGameMaterial(bpy.types.PropertyGroup, LexGameBase):
 
 class LexGameObject(bpy.types.PropertyGroup, LexGameBase):
     smithy : bpy.props.PointerProperty(type=LexSmithyObject)
+
+class LexGameScene(bpy.types.PropertyGroup, LexGameBase):
+    smithy : bpy.props.PointerProperty(type=LexSmithyScene)
 
 class LexGameMesh(bpy.types.PropertyGroup, LexGameBase):
     pass
@@ -45,6 +48,7 @@ class LexGameMaterialPanel(bpy.types.Panel):
 def register():
     bpy.types.Material.lexgame = bpy.props.PointerProperty(type=LexGameMaterial)
     bpy.types.Object.lexgame = bpy.props.PointerProperty(type=LexGameObject)
+    bpy.types.Scene.lexgame = bpy.props.PointerProperty(type=LexGameScene)
     bpy.types.Mesh.lexgame = bpy.props.PointerProperty(type=LexGameMesh)
     bpy.types.Camera.lexgame = bpy.props.PointerProperty(type=LexGameCamera)
     bpy.types.Light.lexgame = bpy.props.PointerProperty(type=LexGameLight)

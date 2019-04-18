@@ -83,3 +83,39 @@ class LexSmithyObject(bpy.types.PropertyGroup):
     #active_engine_component_index : bpy.props.IntProperty(default=-1)
     #engine_components : bpy.props.CollectionProperty(type=LexSmithyEngineComponent)
 
+class LexSmithyScene(bpy.types.PropertyGroup):
+    pass
+
+
+def _on_scene_state_created(nodegroup, node):
+    default_name = "State"
+    name = default_name
+    i = 0
+    while nodegroup.nodes.get(name):
+        i += 1
+        name = default_name + "_" + str(i)
+    
+    node.set_lex_name(name)
+    node.name = name
+    node.label = name
+
+
+def _rename_statescript(state_node, old_name, name):
+    state_node.name = name
+    state_node.label = name
+
+    # rename script file
+    old_script_filepath = abs_state_scriptpath(old_name)
+    new_script_filepath = abs_state_scriptpath(name)
+
+    if os.path.exists(old_script_filepath):
+        os.rename(old_script_filepath, new_script_filepath)
+
+
+def register():
+    from ... import lex_statemachine as lexsm 
+    lexsm.add_scene_state_created_callback(_on_scene_state_created)
+    lexsm.add_scene_state_namechange_callback(_rename_statescript)
+
+def unregister():
+    pass

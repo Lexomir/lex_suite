@@ -1,0 +1,16 @@
+local State = {}
+
+function State:start(args)
+    --
+end
+
+function State:update(dt)
+    --
+end
+
+function State:stop()
+    --
+end
+
+
+return State

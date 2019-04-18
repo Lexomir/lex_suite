@@ -47,7 +47,8 @@ class LexSM_ApplySelectedStateNode(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return context.area.type == "NODE_EDITOR" 
+        node_group = context.space_data.node_tree
+        return context.area.type == "NODE_EDITOR" and isinstance(node_group, LexSM_BaseNodeTree)
     
     def execute(self, context):
         node_group = context.space_data.node_tree
@@ -59,6 +60,22 @@ class LexSM_ApplySelectedStateNode(bpy.types.Operator):
 
         return {"FINISHED"}
 
+class LexSM_ApplyStateNodeUnderCursor(bpy.types.Operator):
+    bl_idname = 'lexsm.apply_state_node_under_cursor'
+    bl_label = "LexSM Apply State Node Under Cursor"
+
+    @classmethod
+    def poll(cls, context):
+        node_group = context.space_data.node_tree
+        return context.area.type == "NODE_EDITOR" and isinstance(node_group, LexSM_BaseNodeTree)
+    
+    def invoke(self, context, event):
+        node_group = context.space_data.node_tree
+
+        bpy.ops.node.select(mouse_x=event.mouse_region_x, mouse_y=event.mouse_region_y, extend=False)
+        bpy.ops.lexsm.apply_selected_state_node()
+
+        return {"FINISHED"}
 
 class LexSM_ContextChecker(bpy.types.Operator):
     bl_idname = 'lexsm.context_checker'
@@ -69,6 +86,6 @@ class LexSM_ContextChecker(bpy.types.Operator):
         return True
     
     def execute(self, context):
-        print(type(context.space_data.node_tree))
+        print(context.space_data.node_tree)
 
         return {"FINISHED"}
