@@ -91,7 +91,7 @@ def _on_scene_state_created(nodegroup, node):
     default_name = "State"
     name = default_name
     i = 0
-    while nodegroup.nodes.get(name):
+    while nodegroup.nodes.get(name) and node.name != name:
         i += 1
         name = default_name + "_" + str(i)
     
@@ -103,6 +103,9 @@ def _on_scene_state_created(nodegroup, node):
 def _rename_statescript(state_node, old_name, name):
     state_node.name = name
     state_node.label = name
+
+    if not bpy.data.filepath:
+        return 
 
     # rename script file
     old_script_filepath = abs_state_scriptpath(old_name)

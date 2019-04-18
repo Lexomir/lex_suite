@@ -157,6 +157,10 @@ class OpenSmithyComponentScriptExternal(bpy.types.Operator):
         return context.object and c and c.filepath != ""
 
     def execute(self, context):
+        if not bpy.data.filepath:
+            self.report({"ERROR"}, "Save the project first. This operation needs a project folder.")
+            return {"CANCELLED"}
+
         c_index = context.object.lexgame.smithy.active_script_component_index
         c = context.object.lexgame.smithy.script_components[c_index]
         
@@ -180,6 +184,10 @@ class NewSmithyComponentScript(bpy.types.Operator):
         return context.object and c and c.filepath != ""
 
     def execute(self, context):
+        if not bpy.data.filepath:
+            self.report({"ERROR"}, "Save the project first. This operation needs a project folder.")
+            return {"CANCELLED"}
+            
         def create_component_script(script_name):
             template_filepath = os.path.abspath(os.path.dirname(__file__) + "/templates/smithy_component_template.txt")
             with open(template_filepath, "r") as template_file:

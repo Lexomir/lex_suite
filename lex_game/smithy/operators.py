@@ -26,12 +26,16 @@ class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
         return True
     
     def execute(self, context):
+        if not bpy.data.filepath:
+            self.report({"ERROR"}, "Save the project first. This operation needs a project folder.")
+            return {"CANCELLED"}
+
         # get state name, find lua file
         state_nodegroup = context.scene.lexsm.get_nodegroup()
         state = state_nodegroup.find_applied_state_node() if state_nodegroup else None
         
         if not state:
-            return {"CANCELED"}
+            return {"CANCELLED"}
         
         script_filepath = abs_state_scriptpath(state.name)
         if not os.path.exists(script_filepath):
@@ -50,12 +54,16 @@ class LexSmithy_EditSelectedStateScript(bpy.types.Operator):
         return True
     
     def execute(self, context):
+        if not bpy.data.filepath:
+            self.report({"ERROR"}, "Save the project first. This operation needs a project folder.")
+            return {"CANCELLED"}
+
         # get state name, find lua file
         state_nodegroup = context.scene.lexsm.get_nodegroup()
         state = state_nodegroup.nodes.active if state_nodegroup else None
         
         if not state:
-            return {"CANCELED"}
+            return {"CANCELLED"}
         
         script_filepath = abs_state_scriptpath(state.name)
         if not os.path.exists(script_filepath):
