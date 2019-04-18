@@ -103,6 +103,25 @@ class NODE_PT_SceneStateNodePanel(bpy.types.Panel):
 
         node_group = context.space_data.node_tree
         node = node_group.nodes.active
+
+        # TODO move this to lexgame (after i move 'lex_name' to node.lexgame.smithy)
         layout.prop(node, "lex_name", text="Name")
         layout.operator('lexgame.edit_selected_smithy_state_script', text="Edit Script")
 
+
+# hide the standard node prop panel if it's a smithy stategraph
+@classmethod
+def not_scene_state_node_poll(cls, context):
+        node_group = context.space_data.node_tree
+        return node_group and not isinstance(node_group, LexSM_BaseNodeTree) and node_group.nodes.active
+
+original_node_basic_panel_poll = None
+def register():
+    global original_node_basic_panel_poll
+    original_node_basic_panel_poll = bpy.types.NODE_PT_active_node_generic.poll
+    bpy.types.NODE_PT_active_node_generic.poll = not_scene_state_node_poll
+
+def unregister():
+    global original_node_basic_panel_poll
+    if original_node_basic_panel_poll:
+        bpy.types.NODE_PT_active_node_generic.poll = original_node_basic_panel_poll
