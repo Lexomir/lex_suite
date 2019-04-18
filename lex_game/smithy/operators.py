@@ -3,19 +3,6 @@ import os
 import subprocess
 from .utils import abs_state_scriptpath
 
-def create_state_script(output_filepath):
-    template_filepath = os.path.normpath(os.path.abspath(os.path.dirname(__file__) + "/../templates/smithy_state_script_template.txt"))
-    with open(template_filepath, "r") as template_file:
-        script_template = template_file.read()
-
-    os.makedirs(os.path.dirname(output_filepath), exist_ok=True)
-    print("Making State Script: ", output_filepath)
-
-    with open(output_filepath, "w") as script_file:
-        script_file.write(script_template)
-
-    return output_filepath
-
 
 class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
     bl_idname = 'lexgame.edit_applied_smithy_state_script'
@@ -36,10 +23,9 @@ class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
         
         if not state:
             return {"CANCELLED"}
-        
-        script_filepath = abs_state_scriptpath(state.name)
-        if not os.path.exists(script_filepath):
-            create_state_script(script_filepath)
+
+        if not state_script_exists(state.name):
+            create_state_script(state.name)
 
         subprocess.run(['code', os.path.dirname(script_filepath), script_filepath], shell=True)
 

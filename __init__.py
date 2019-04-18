@@ -54,6 +54,7 @@ def register():
 
     lex_suite = sys.modules[__name__]
     lex2d = sys.modules.get('lex2d')
+
     if lex2d:
         callback = getattr(lex2d, '__lex_suite_registered__')
         if callback: callback(lex_suite)

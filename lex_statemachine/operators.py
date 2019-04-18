@@ -47,6 +47,9 @@ class LexSM_ApplySelectedStateNode(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
+        if not hasattr(context.space_data, "node_tree"):
+            return False
+            
         node_group = context.space_data.node_tree
         return context.area.type == "NODE_EDITOR" and isinstance(node_group, LexSM_BaseNodeTree)
     
@@ -66,6 +69,9 @@ class LexSM_ApplyStateNodeUnderCursor(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
+        if not hasattr(context.space_data, "node_tree"):
+            return False
+         
         node_group = context.space_data.node_tree
         return context.area.type == "NODE_EDITOR" and isinstance(node_group, LexSM_BaseNodeTree)
     
