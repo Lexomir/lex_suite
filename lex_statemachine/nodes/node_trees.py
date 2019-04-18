@@ -1,7 +1,7 @@
 import bpy
 from .base import LexSM_BaseNodeTree
 
-from ..utils import refresh_screen_area
+from ...utils import refresh_screen_area
 
 import nodeitems_utils
 from nodeitems_utils import NodeCategory, NodeItem
