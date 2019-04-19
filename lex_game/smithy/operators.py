@@ -2,6 +2,7 @@ import bpy
 import os
 import subprocess
 from .utils import abs_state_scriptpath
+from . import state_script_exists
 
 
 class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
@@ -27,6 +28,7 @@ class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
         if not state_script_exists(state.name):
             create_state_script(state.name)
 
+        script_filepath = abs_state_scriptpath(state.name)
         subprocess.run(['code', os.path.dirname(script_filepath), script_filepath], shell=True)
 
         return {"FINISHED"}
