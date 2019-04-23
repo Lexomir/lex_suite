@@ -36,6 +36,8 @@ import os
 import sys
 import addon_utils
 
+this_module = sys.modules[__name__]
+
 # load and reload submodules
 ##################################
 
@@ -47,17 +49,38 @@ auto_load.init()
 # register
 ##################################
 
+# ===========================================================
+#   Interface for connecting to external modules ('lex2d')
+
+this_module._waiting_for_lex2d = True
+
+def waiting_for_module(name):
+    return name == "lex2d" and this_module._waiting_for_lex2d
+
+# connected attempted by lex_suite
+def request_module_connection(module):
+    if module.__name__ == "lex2d" and this_module._waiting_for_lex2d:
+        this_module._waiting_for_lex2d = False
+        module.connect_module(this_module)
+        return True
+    return False
+
+# ===========================================================
+
+# trying to connect to lex_suite
+def _try_connect_to_module(name):
+    other_module = sys.modules.get(name)
+    connected_to_lex2d = other_module and other_module.waiting_for_module(__name__)
+    if connected_to_lex2d:
+        other_module.connect_module(this_module)
+    this_module._waiting_for_lex2d = not connected_to_lex2d
+    return connected_to_lex2d
 
 def register():
     auto_load.register()
     print("Registered {} with {} modules".format(bl_info["name"], len(auto_load.modules)))
 
-    lex_suite = sys.modules[__name__]
-    lex2d = sys.modules.get('lex2d')
-
-    if lex2d:
-        callback = getattr(lex2d, '__lex_suite_registered__')
-        if callback: callback(lex_suite)
+    _try_connect_to_module("lex2d")
 
 def unregister():
     auto_load.unregister()

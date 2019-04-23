@@ -115,9 +115,6 @@ class LexSM_BaseStateNode:
 
 class LexSM_BaseNodeTree:
     
-    def apply_active_state(self):
-        self.apply_state(self.nodes.active)
-
     def set_node_as_applied(self, node):
         applied_state = self.find_applied_state_node()
         if applied_state != node:

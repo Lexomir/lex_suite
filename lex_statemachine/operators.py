@@ -56,8 +56,9 @@ class LexSM_ApplySelectedStateNode(bpy.types.Operator):
     def execute(self, context):
         node_group = context.space_data.node_tree
         if node_group and isinstance(node_group, LexSM_BaseNodeTree):
-            print("applying state")
-            node_group.apply_active_state()
+            if node_group.nodes.active:
+                print("Applying State:", node_group.nodes.active.name)
+                node_group.apply_state(node_group.nodes.active)
 
         refresh_screen_area("PROPERTIES")
 

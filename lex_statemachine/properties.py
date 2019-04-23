@@ -46,8 +46,9 @@ class LexSM_ObjectState(bpy.types.PropertyGroup):
     def save(self, obj):
         self.editor_components_serialized.clear()
         for c in obj.lexeditor.components:
-            sc = self.editor_components_serialized.add()
-            sc.serialize(c)
+            if c.filepath:
+                sc = self.editor_components_serialized.add()
+                sc.serialize(c)
 
         self.smithy_components_serialized.clear()
         for c in obj.lexgame.smithy.script_components:

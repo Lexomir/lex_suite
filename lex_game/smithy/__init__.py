@@ -21,11 +21,13 @@ def create_state_script(state_name):
 
     return output_filepath
 
+def get_component_system():
+    from . import script_parser
+    return script_parser
 
 _component_update_callbacks = []
 
 def on_component_updated(obj, component_instance):
-    print('object', obj.name, 'updating component', component_instance.filepath)
     for cb in _component_update_callbacks:
         cb(obj, component_instance)
 

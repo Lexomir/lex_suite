@@ -28,6 +28,11 @@ class GenericValue:
         if datatype == 'int': return self.set_range(args[0], args[1])
         if datatype == 'enum': return self._set_enum_items(args)
 
+    def get_args(self):
+        if self.datatype == 'float': return [self.min_value, self.max_value]
+        if self.datatype == 'int': return [self.min_value, self.max_value]
+        if self.datatype == 'enum': return self.enum_items.split(",") or []
+
     def set_float(self, val, min_value, max_value):
         self.datatype = 'float'
         self.min_value = min_value
