@@ -43,9 +43,9 @@ def on_update():
             while len(state.outputs) > len(parsed_outputs):
                 state.outputs.remove(state.outputs[-1])
             
-            # add the new outputs and try to reconnect old nodes to them
+            # rename the outputs
             for i, output_name in enumerate(parsed_outputs): 
-                node_output = state.outputs[i].name = output_name
+                state.outputs[i].name = output_name
 
 def _frame_change_post(scene):
     on_update()
