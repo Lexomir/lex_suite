@@ -45,9 +45,7 @@ class LexSM_BaseStateNode:
         else:
             self.get_nodegroup().apply_state(self)
 
-        self.inputs.new('LexSM_StateSocket', "Previous")
-        self.outputs.new('LexSM_StateSocket', "Next")
- 
+        self.setup_default_inputs_outputs()
         self._call_state_created_callbacks()
 
     def update(self):
@@ -63,6 +61,13 @@ class LexSM_BaseStateNode:
         while i >= 0 and not self.inputs[i].is_linked:
             self.inputs.remove(self.inputs[-1])
             i -= 1
+
+    def setup_default_inputs_outputs(self):
+        self.inputs.clear()
+        self.outputs.clear()
+        self.inputs.new('LexSM_StateSocket', "Previous")
+        self.outputs.new('LexSM_StateSocket', "Continue")
+        self.outputs.new('LexSM_StateSocket', "Nah")
 
     def get_input_states(self):
         return []
@@ -88,6 +93,7 @@ class LexSM_BaseStateNode:
     def copy(self, node):
         self.color = self.true_color
         self.get_nodegroup().apply_state(self)
+        self.setup_default_inputs_outputs()
         self._call_state_created_callbacks()
 
     # Free function to clean up on removal.

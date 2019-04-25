@@ -2,7 +2,7 @@ import bpy
 import os
 import subprocess
 from .utils import abs_state_scriptpath
-from . import state_script_exists
+from . import state_script_exists, create_state_script
 
 
 class LexSmithy_EditAppliedStateScript(bpy.types.Operator):
@@ -53,10 +53,10 @@ class LexSmithy_EditSelectedStateScript(bpy.types.Operator):
         if not state:
             return {"CANCELLED"}
         
-        script_filepath = abs_state_scriptpath(state.name)
-        if not os.path.exists(script_filepath):
-            create_state_script(script_filepath)
+        if not state_script_exists(state.name):
+            create_state_script(state.name)
 
+        script_filepath = abs_state_scriptpath(state.name)
         subprocess.run(['code', os.path.dirname(script_filepath), script_filepath], shell=True)
 
         return {"FINISHED"}

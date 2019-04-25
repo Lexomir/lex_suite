@@ -59,6 +59,7 @@ class LexSM_ObjectState(bpy.types.PropertyGroup):
         self.location = obj.location
         self.rotation_quaternion = obj.rotation_quaternion
         self.scale = obj.scale
+        self.dimensions = obj.dimensions
 
         from . import _obj_save_callbacks
         for cb in _obj_save_callbacks:
@@ -97,6 +98,7 @@ class LexSM_ObjectState(bpy.types.PropertyGroup):
     custom_state_data : bpy.props.CollectionProperty(type=LexStringProperty)
     location : bpy.props.FloatVectorProperty(size=3)
     scale : bpy.props.FloatVectorProperty(size=3)
+    dimensions : bpy.props.FloatVectorProperty(size=3)
     rotation_quaternion : bpy.props.FloatVectorProperty(size=4)
 
 

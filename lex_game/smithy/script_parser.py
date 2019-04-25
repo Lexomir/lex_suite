@@ -138,7 +138,6 @@ def refresh_inputs(bpy_component_instance):
 
 def input_updated(bpy_component_instance, bpy_input):
     from . import on_component_updated
-    print("Component '{}' input '{}' has been updated.".format(bpy_component_instance.filepath, bpy_input.name))
     on_component_updated(bpy_component_instance.id_data, bpy_component_instance)
 
 
