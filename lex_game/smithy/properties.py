@@ -101,17 +101,32 @@ def _on_scene_state_created(nodegroup, node):
 
 
 def _rename_statescript(state_node, old_name, name):
-    state_node.name = name
-    state_node.label = name
-
     if not bpy.data.filepath:
-        return 
+        state_node.name = name
+        state_node.label = name
+        return
+
+    final_name = name
+    nodegroup = state_node.get_nodegroup()
+    i = 0
+    while nodegroup.nodes.get(final_name) and final_name != state_node.name:
+        i += 1
+        final_name = name + "_" + str(i)
+    
+    state_node.set_lex_name(final_name)
+    state_node.name = final_name
+    state_node.label = final_name
+
+    if final_name == old_name:
+        return
 
     # rename script file
     old_script_filepath = abs_state_scriptpath(old_name)
-    new_script_filepath = abs_state_scriptpath(name)
-
     if os.path.exists(old_script_filepath):
+        new_script_filepath = abs_state_scriptpath(final_name)
+
+        if os.path.exists(new_script_filepath):
+            os.remove(new_script_filepath)
         os.rename(old_script_filepath, new_script_filepath)
 
 

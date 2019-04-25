@@ -37,9 +37,9 @@ class LexSM_SceneStateNode(bpy.types.Node, LexSM_BaseStateNode):
     def set_lex_name_and_update(self, val):
         from .. import _scene_state_namechange_callbacks
         old_name = self.get('lex_name', self.name)
+        self['lex_name'] = val
         for cb in _scene_state_namechange_callbacks:
             cb(self, old_name, val)
-        self['lex_name'] = val
 
     def set_lex_name(self, val):
         self['lex_name'] = val
