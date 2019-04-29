@@ -136,8 +136,6 @@ class LexSM_Scene(bpy.types.PropertyGroup):
         def add_object_load_callback(self, identifier, func):
             print("adding onload:", identifier)
 
-
-
     node_group : bpy.props.StringProperty()
 
 
@@ -146,7 +144,7 @@ def replace_components(component_context, state_components):
             intersecting = []
             a_list = list(a_list)
             b_list = list(b_list)
-            for a in a_list:
+            for a in a_list[:]:
                 found_items = [b for b in b_list if b.filepath == a.filepath]
                 if found_items:
                     b = found_items[0]
@@ -159,6 +157,7 @@ def replace_components(component_context, state_components):
     dying_components, continuing_components, new_components = component_list_intersection(bpy_components, state_components)
     for dying_c in dying_components:
         component_context.remove_component(dying_c.filepath)
+        component_list_intersection(bpy_components, state_components)
     
     component_system = component_context.get_component_system()
     for (bpy_c, state_c) in continuing_components:

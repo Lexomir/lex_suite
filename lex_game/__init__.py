@@ -7,6 +7,7 @@ def validate_input(name, datatype, value, args):
         elif datatype == 'enum' and value not in args: return False
         elif datatype in ['float', 'int']: return float(args[0]) <= float(value) <= float(args[1])
         elif 'vec' in datatype: return len(value) > 0 and isinstance(value[0], (int, float))
+        elif datatype == 'string': return type(value).__name__ == 'str'
         else:
             return True
     except:
@@ -16,7 +17,7 @@ def deserialize_value(datatype, string_val):
     def deserialize_vec(vec_string):
         return [float(str_val) for str_val in vec_string.split(',')]
 
-    if datatype == 'int': return int(string_val)
+    if datatype == 'int': return int(float(string_val))
     elif datatype == 'float': return float(string_val)
     elif datatype == 'bool': return bool(string_val != "False" and string_val)
     elif datatype == 'vec2': return deserialize_vec(string_val)
