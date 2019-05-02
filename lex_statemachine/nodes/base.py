@@ -138,7 +138,7 @@ class LexSM_BaseNodeTree:
     
     def find_applied_state_node(self):
         for n in self.nodes:
-            if n.is_applied:
+            if type(n).__name__ == 'LexSM_SceneStateNode' and n.is_applied:
                 return n
         return None
 

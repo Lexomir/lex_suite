@@ -159,6 +159,9 @@ def get_or_create_component(filepath):
 def get_component(filepath):
     return _components.get(filepath)
 
+def get_all_component_filepaths():
+    return list(_components)
+
 
 def recompile_component_if_changed(component):
     has_changed = component.check_file_change()

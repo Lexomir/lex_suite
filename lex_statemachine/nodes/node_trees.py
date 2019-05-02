@@ -65,6 +65,10 @@ class LexSM_ObjectNodeTree(bpy.types.NodeTree, LexSM_BaseNodeTree):
     bl_idname = "LexSM_ObjectNodeTree"
     bl_label = "Object State Machine"
 
+    @classmethod
+    def poll(cls, context):
+        return False
+
     def find_affected_objects(self):
         return [o for o in bpy.data.objects if o.lexsm.get_node_group_name() == self.name]
 
