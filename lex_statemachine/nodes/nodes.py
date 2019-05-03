@@ -20,32 +20,18 @@ class LexSM_SceneStateNode(bpy.types.Node, LexSM_BaseStateNode):
     bl_icon = 'NONE'
 
     def save_scene_state(self, scene):
-        self.object_states.clear()
+        assert False
 
-        objs = bpy.data.objects
-        for o in objs:
-            state = self.object_states.add()
-            state.name = o.name
-            state.save(o)
     
     def load_scene_state(self, scene):
-        for state in self.object_states:
-            obj = bpy.data.objects.get(state.name, None)
-            if obj:
-                state.load(obj)
+        assert False
 
-    def set_lex_name_and_update(self, val):
-        from .. import _scene_state_namechange_callbacks
-        old_name = self.get('lex_name', self.name)
-        self['lex_name'] = val
-        for cb in _scene_state_namechange_callbacks:
-            cb(self, old_name, val)
-
+    
     def set_lex_name(self, val):
         self['lex_name'] = val
 
     def get_lex_name(self):
         return self.get('lex_name')
 
-    lex_name : bpy.props.StringProperty(set=set_lex_name_and_update, get=get_lex_name)
+    lex_name : bpy.props.StringProperty(set=set_lex_name, get=get_lex_name)
     object_states : bpy.props.CollectionProperty(type=LexSM_ObjectState)

@@ -57,14 +57,21 @@ this_module._waiting_for_lex2d = True
 def waiting_for_module(name):
     return name == "lex2d" and this_module._waiting_for_lex2d
 
-# connected attempted by lex_suite
+# connection attempted by lex2d
 def request_module_connection(module):
-    if module.__name__ == "lex2d" and this_module._waiting_for_lex2d:
+    if module.__name__ == "lex2d" and this_module.__addon_enabled__ and this_module._waiting_for_lex2d:
         this_module._waiting_for_lex2d = False
         module.connect_module(this_module)
         return True
     return False
 
+# connection attempted by lex2d
+def request_module_disconnection(module):
+    if module.__name__ == "lex2d":
+        this_module._waiting_for_lex2d = True
+        module.disconnect_module(this_module)
+        return True
+    return False
 # ===========================================================
 
 # trying to connect to lex_suite

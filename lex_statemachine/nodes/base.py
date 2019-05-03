@@ -35,45 +35,12 @@ class LexSM_StateSocket(bpy.types.NodeSocket):
     prev_input_node_name : bpy.props.StringProperty()
     
 
-
 class LexSM_BaseStateNode:
     def init(self, context):        
-        applied_state = self.get_nodegroup().find_applied_state_node()
-        if not applied_state:
-            # this node will adopt the object's current state
-            self.get_nodegroup().set_node_as_applied(self)
-        else:
-            self.get_nodegroup().apply_state(self)
-
-        self.setup_default_inputs_outputs()
-        self._call_state_created_callbacks()
+        return
 
     def update(self):
-        for i in self.inputs:
-            i.check_for_new_input()
-        
-        # add an extra empty input
-        if self.inputs[-1].is_linked:
-            self.inputs.new('LexSM_StateSocket', "Previous")
-        
-        # remove any empty inputs at the end (except for one)
-        i = len(self.inputs) - 2
-        while i >= 0 and not self.inputs[i].is_linked:
-            self.inputs.remove(self.inputs[-1])
-            i -= 1
-
-    def setup_default_inputs_outputs(self):
-        self.inputs.clear()
-        self.outputs.clear()
-        self.inputs.new('LexSM_StateSocket', "Previous")
-        self.outputs.new('LexSM_StateSocket', "Continue")
-        self.outputs.new('LexSM_StateSocket', "Nah")
-
-    def get_input_states(self):
-        return []
-
-    def get_output_states(self):
-        return []
+        return
 
     @classmethod
     def poll(cls, ntree):
@@ -91,10 +58,7 @@ class LexSM_BaseStateNode:
 
     # Copy function to initialize a copied node from an existing one.
     def copy(self, node):
-        self.color = self.true_color
-        self.get_nodegroup().apply_state(self)
-        self.setup_default_inputs_outputs()
-        self._call_state_created_callbacks()
+        return
 
     # Free function to clean up on removal.
     def free(self):
@@ -102,43 +66,16 @@ class LexSM_BaseStateNode:
 
     # Additional buttons displayed on the node.
     def draw_buttons(self, context, layout):
-        layout.operator("lexsm.apply_state_node_under_cursor", text="Apply")
+        return
 
     # Detail buttons in the sidebar.
     # If this function is not defined, the draw_buttons function is used instead
     def draw_buttons_ext(self, context, layout):
-        layout.prop(self, "lex_name", text="Name")
-        layout.prop(self, "true_color", text="Color")
-
-    def _call_state_created_callbacks(self):
-        from .. import _scene_state_created_callbacks
-        for cb in _scene_state_created_callbacks:
-            cb(self.get_nodegroup(), self)
+        return
 
     true_color : bpy.props.FloatVectorProperty(subtype='COLOR', default=(0.4, 0.4, 0.4))
     is_applied : bpy.props.BoolProperty(default=False)
 
 
 class LexSM_BaseNodeTree:
-    
-    def set_node_as_applied(self, node):
-        applied_state = self.find_applied_state_node()
-        if applied_state != node:
-            if applied_state:
-                applied_state.color = applied_state.true_color
-                applied_state.is_applied = False
-            
-            activated_color = (0.348079, 0.548852, 0.348826)
-            node.color = activated_color
-            node.use_custom_color = True
-            node.is_applied = True
-        
-        # return the previous applied node
-        return applied_state
-    
-    def find_applied_state_node(self):
-        for n in self.nodes:
-            if type(n).__name__ == 'LexSM_SceneStateNode' and n.is_applied:
-                return n
-        return None
-
+    pass

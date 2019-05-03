@@ -31,18 +31,6 @@ class LexGameArmature(bpy.types.PropertyGroup, LexGameBase):
 
 class LexGameTextCurve(bpy.types.PropertyGroup, LexGameBase):
     pass
- 
-class LexGameMaterialPanel(bpy.types.Panel):
-    bl_idname = "Game_Material_panel"
-    bl_label = "Game"
-    bl_space_type = 'PROPERTIES'
-    bl_region_type = 'WINDOW'
-    bl_context = "material"
-
-    def draw(self, context):
-        if context.object.active_material:
-            mat = context.object.active_material
-            self.layout.prop(mat.lexgame, 'dirty')
 
 
 def register():
