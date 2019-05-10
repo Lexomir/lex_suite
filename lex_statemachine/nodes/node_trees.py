@@ -12,9 +12,12 @@ class LexSM_SceneNodeTree(bpy.types.NodeTree, LexSM_BaseNodeTree):
     bl_idname = "LexSM_SceneNodeTree"
     bl_label = "Scene State Machine"
 
+    @classmethod
+    def poll(cls, context):
+        return False
+
     def save_current_state(self):
         assert False
-
 
     def apply_state(self, node):
         assert False
