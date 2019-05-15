@@ -71,7 +71,7 @@ class LexEditor(bpy.types.PropertyGroup):
         return c
     
     def remove_component(self, filepath):
-        for i, c in enumerate(reversed(self.components)):
+        for i, c in reversed(list(enumerate(self.components))):
             if c.filepath == filepath:
                 self.components.remove(i)
 
