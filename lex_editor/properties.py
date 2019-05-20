@@ -39,7 +39,7 @@ class BpyComponent(bpy.types.PropertyGroup):
         editor.stop_component(self)
         editor.start_component(self)
 
-    # called when component is modified externally (e.g. from statemachine)
+    # called when component is modified externally
     def refresh_inputs(self):
         editor.stop_component(self)
         editor.start_component(self)

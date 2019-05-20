@@ -119,7 +119,9 @@ class Mesh:
         disable_modifier(mesh_object, 'ARMATURE')
         apply_modifiers = True
         settings = 'PREVIEW'
-        mesh = mesh_object.to_mesh(bpy.context.depsgraph, apply_modifiers, calc_undeformed=True)
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        evaluated_obj = mesh_object.evaluated_get(depsgraph)
+        mesh = evaluated_obj.to_mesh()
         enable_modifier(mesh_object, 'ARMATURE')
 
         if mesh_object.data and (not mesh_object.data.polygons or not mesh_object.data.uv_layers):
@@ -177,8 +179,6 @@ class Mesh:
                         if skeleton.has_bone(bone_name):
                             vgroups_weights.append((skeleton.get_bone(bone_name).id, vg.weight))
                 self.vbs.append(vgroups_weights)
-
-        bpy.data.meshes.remove(mesh)
 
 
 class Skeleton:
